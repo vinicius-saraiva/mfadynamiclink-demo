@@ -1,10 +1,15 @@
 import express from 'express';
 import { Authsignal } from "@authsignal/node";
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Initialize Authsignal
 const authsignal = new Authsignal({
