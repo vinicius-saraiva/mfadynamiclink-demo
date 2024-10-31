@@ -1,0 +1,6 @@
+cost per request : 0.04
+number of requests : 65
+
+total cost : 2.60 USD
+
+time-cost : 4 hours
