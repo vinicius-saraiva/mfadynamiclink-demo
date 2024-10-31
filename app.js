@@ -12,11 +12,15 @@ const authsignal = new Authsignal({
   tenant: "4dc4249b-a3cd-467d-992c-d26646f78c7d",
 });
 
+// Add storage for pending payments
+const pendingPayments = new Map();
+
 // Endpoint to initiate payment with MFA
 app.post('/api/payment/authorize', async (req, res) => {
   const { userId, amount, beneficiaryId } = req.body;
 
-  console.log('Starting payment authorization for:', {
+  console.log('\n=== PAYMENT AUTHORIZATION REQUEST ===');
+  console.log('Payment Details:', {
     userId,
     amount,
     beneficiaryId
@@ -32,40 +36,56 @@ app.post('/api/payment/authorize', async (req, res) => {
         beneficiaryId: beneficiaryId,
         timestamp: new Date().toISOString()
       },
-      // Add these parameters
       ipAddress: req.ip,
       userAgent: req.headers['user-agent'],
-      // Force challenge for testing
       forceChallenge: true
     });
 
-    console.log('Authsignal track response:', {
-      state: result.state,
-      url: result.url,
-      token: result.token
-    });
+    console.log('\n=== AUTHSIGNAL TRACK RESPONSE ===');
+    console.log('State:', result.state);
+    console.log('Challenge URL:', result.url);
+    console.log('Token:', result.token);
 
     if (result.state === "CHALLENGE_REQUIRED") {
-      console.log('Challenge required, returning URL:', result.url);
+      // Parse the token to get the idempotencyKey
+      const tokenPayload = JSON.parse(Buffer.from(result.token.split('.')[1], 'base64').toString());
+      const idempotencyKey = tokenPayload.other?.idempotencyKey;
+      
+      console.log('IdempotencyKey:', idempotencyKey);
+
+      const paymentData = {
+        amount: amount,
+        beneficiaryId: beneficiaryId,
+        timestamp: new Date()
+      };
+      
+      pendingPayments.set(idempotencyKey, paymentData);
+      
+      console.log('\n=== PAYMENT DETAILS STORED ===');
+      console.log('IdempotencyKey:', idempotencyKey);
+      console.log('Stored Payment Data:', paymentData);
+
       res.json({
         requiresChallenge: true,
         challengeUrl: result.url,
         token: result.token
       });
     } else if (result.state === "ALLOW") {
-      console.log('No challenge required, payment approved');
+      console.log('\n=== PAYMENT APPROVED WITHOUT CHALLENGE ===');
       res.json({
         requiresChallenge: false,
         status: 'approved'
       });
     } else {
-      console.log('Payment blocked, state:', result.state);
+      console.log('\n=== PAYMENT BLOCKED ===');
+      console.log('State:', result.state);
       res.status(403).json({
         error: 'Payment authorization blocked'
       });
     }
   } catch (error) {
-    console.error('Error during authorization:', error);
+    console.error('\n=== AUTHORIZATION ERROR ===');
+    console.error('Error:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -93,12 +113,46 @@ app.post('/api/payment/validate', async (req, res) => {
   }
 });
 
-// Add this route to handle the redirect after MFA
-app.get('/payment/complete', (req, res) => {
-  // Handle successful MFA completion
-  res.send('Payment authorized successfully!');
-  // Or redirect to a success page
-  // res.redirect('/payment-success.html');
+// Simplified completion endpoint
+app.get('/payment/complete', async (req, res) => {
+  const token = req.query.token;
+  
+  try {
+    console.log('\n=== PAYMENT COMPLETION REQUEST ===');
+    console.log('Received Token:', token);
+
+    const result = await authsignal.validateChallenge({ token });
+    
+    console.log('\n=== VALIDATION RESULT ===');
+    console.log(JSON.stringify(result, null, 2));
+
+    // Return a simple success or failure page based on the challenge state
+    if (result.state === "CHALLENGE_SUCCEEDED") {
+      return res.send(`
+        <h1>Payment Successfully Authorized!</h1>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+          ${JSON.stringify(result, null, 2)}
+        </pre>
+        <a href="/">Make another payment</a>
+      `);
+    } else {
+      return res.send(`
+        <h1>Challenge Failed</h1>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+          ${JSON.stringify(result, null, 2)}
+        </pre>
+        <a href="/">Try again</a>
+      `);
+    }
+  } catch (error) {
+    console.error('\n=== VALIDATION ERROR ===');
+    console.error('Error:', error);
+    res.send(`
+      <h1>Error During Validation</h1>
+      <p>${error.message}</p>
+      <a href="/">Try again</a>
+    `);
+  }
 });
 
 app.listen(3000, () => {
