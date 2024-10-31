@@ -8,6 +8,13 @@
 <body>
     <div class="container">
         <div class="card" style="text-align: center;">
+            <div id="loadingCard">
+                <div style="margin: 20px 0;">
+                    <div class="spinner"></div>
+                </div>
+                <p style="color: var(--text-secondary);">Verifying your enrollment...</p>
+            </div>
+
             <div id="successCard" style="display: none;">
                 <div class="success-icon">✓</div>
                 
@@ -60,6 +67,14 @@
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
 
+        if (!token) {
+            document.getElementById('errorMessage').textContent = 'No validation token found';
+            document.getElementById('loadingCard').style.display = 'none';
+            document.getElementById('errorCard').style.display = 'block';
+        } else {
+            validateEnrollment();
+        }
+
         async function validateEnrollment() {
             try {
                 const response = await fetch('/api/enrollment/validate', {
@@ -69,6 +84,8 @@
                 });
 
                 const data = await response.json();
+
+                document.getElementById('loadingCard').style.display = 'none';
 
                 if (data.success) {
                     // Store user data
@@ -83,6 +100,7 @@
                     document.getElementById('errorCard').style.display = 'block';
                 }
             } catch (error) {
+                document.getElementById('loadingCard').style.display = 'none';
                 document.getElementById('errorMessage').textContent = error.message;
                 document.getElementById('errorCard').style.display = 'block';
             }
@@ -108,9 +126,24 @@
             setTheme(theme);
         }
 
-        // Initialize
         initTheme();
-        validateEnrollment();
     </script>
+
+    <style>
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </body>
 </html> 

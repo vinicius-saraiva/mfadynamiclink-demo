@@ -214,12 +214,13 @@ app.get('/enrollment/complete', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/enrollment-complete.html'));
 });
 
-// Add a new endpoint to validate the enrollment
+// Add validation endpoint for enrollment
 app.post('/api/enrollment/validate', async (req, res) => {
     const { token } = req.body;
     
     try {
         const result = await authsignal.validateChallenge({ token });
+        console.log('Validation Result:', result);
         
         if (result.state === "CHALLENGE_SUCCEEDED") {
             const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
@@ -235,6 +236,7 @@ app.post('/api/enrollment/validate', async (req, res) => {
             });
         }
     } catch (error) {
+        console.error('Validation Error:', error);
         res.json({
             success: false,
             error: error.message
