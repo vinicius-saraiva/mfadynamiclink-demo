@@ -32,7 +32,7 @@ app.post('/api/payment/authorize', async (req, res) => {
     const result = await authsignal.track({
       userId: userId,
       action: "payment_authorization",
-      redirectUrl: "http://localhost:3000/payment-complete.html",
+      redirectUrl: "https://mfa-dynamic-linking-demonstration.onrender.com/payment-complete.html",
       custom: {
         amount: amount,
         currency: currency,
@@ -187,7 +187,7 @@ app.post('/api/enroll', async (req, res) => {
       userId: userId,
       email: email,
       action: "enroll",
-      redirectUrl: "http://localhost:3000/enrollment/complete",
+      redirectUrl: "https://mfa-dynamic-linking-demonstration.onrender.com/enrollment/complete",
       verificationMethods: ["authenticator_app", "passkey"], // You can customize these methods
       ipAddress: req.ip,
       userAgent: req.headers['user-agent'],
@@ -259,7 +259,7 @@ app.post('/api/signin', async (req, res) => {
             userId: email, // Using email as userId for signin
             email: email,
             action: "signin",
-            redirectUrl: "http://localhost:3000/signin/complete",
+            redirectUrl: "https://mfa-dynamic-linking-demonstration.onrender.com/signin/complete",
             ipAddress: req.ip,
             userAgent: req.headers['user-agent'],
             forceChallenge: true
