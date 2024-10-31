@@ -233,6 +233,78 @@ app.get('/enrollment/complete', async (req, res) => {
   }
 });
 
+// New endpoint to handle sign in
+app.post('/api/signin', async (req, res) => {
+    const { email } = req.body;
+
+    console.log('\n=== SIGNIN REQUEST ===');
+    console.log('User Details:', { email });
+
+    try {
+        const result = await authsignal.track({
+            userId: email, // Using email as userId for signin
+            email: email,
+            action: "signin",
+            redirectUrl: "http://localhost:3000/signin/complete",
+            ipAddress: req.ip,
+            userAgent: req.headers['user-agent'],
+            forceChallenge: true
+        });
+
+        console.log('\n=== SIGNIN TRACK RESPONSE ===');
+        console.log('State:', result.state);
+        console.log('Challenge URL:', result.url);
+
+        res.json({
+            challengeUrl: result.url
+        });
+    } catch (error) {
+        console.error('\n=== SIGNIN ERROR ===');
+        console.error('Error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Signin completion endpoint
+app.get('/signin/complete', async (req, res) => {
+    const token = req.query.token;
+    
+    try {
+        console.log('\n=== SIGNIN COMPLETION ===');
+        const result = await authsignal.validateChallenge({ token });
+        
+        if (result.state === "CHALLENGE_SUCCEEDED") {
+            // Get userId/email from the token payload
+            const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+            const userId = tokenPayload.sub;
+            const email = result.email;
+
+            return res.send(`
+                <h1>✅ Successfully Signed In!</h1>
+                <p>You can now authorize payments.</p>
+                <script>
+                    localStorage.setItem('authUserId', '${userId}');
+                    localStorage.setItem('authUserEmail', '${email || ''}');
+                    window.location.href = '/';
+                </script>
+            `);
+        } else {
+            return res.send(`
+                <h1>❌ Sign In Failed</h1>
+                <p>Please try again.</p>
+                <a href="/signin.html">Try Again</a>
+            `);
+        }
+    } catch (error) {
+        console.error('Sign In Error:', error);
+        res.send(`
+            <h1>Error During Sign In</h1>
+            <p>${error.message}</p>
+            <a href="/signin.html">Try Again</a>
+        `);
+    }
+});
+
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 }); 

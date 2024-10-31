@@ -11,6 +11,23 @@
         }
         .warning { color: #ff4444; }
         .info { color: #4444ff; }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            opacity: 0.9;
+        }
+        #authSection {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -20,9 +37,32 @@
             <p>Logged in as: <span id="currentUser"></span></p>
             <button onclick="logout()" style="padding: 5px 10px;">Logout</button>
         </div>
-        <div id="loginPrompt" style="margin-bottom: 20px; padding: 10px; background: #ffebee; border-radius: 5px; display: none;">
-            <p>Please register or login first</p>
-            <a href="/register.html" class="button">Register Authentication Method</a>
+        <div id="authSection" style="margin-bottom: 20px; text-align: center; display: none;">
+            <h3>Welcome to Payment Authorization Demo</h3>
+            <p>Please sign in or create a new account to continue</p>
+            
+            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+                <a href="/signin.html" class="button" style="
+                    padding: 10px 20px;
+                    background: #4444ff;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    flex: 1;
+                    max-width: 200px;">
+                    Sign In
+                </a>
+                <a href="/register.html" class="button" style="
+                    padding: 10px 20px;
+                    background: #44aa44;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    flex: 1;
+                    max-width: 200px;">
+                    Sign Up
+                </a>
+            </div>
         </div>
         <form id="paymentForm">
             <div>
@@ -55,10 +95,6 @@
             <p>Beneficiary Name: <span id="confirmedBeneficiaryName"></span></p>
             <p class="warning">⚠️ Any attempt to modify these details after MFA generation will invalidate the authorization.</p>
         </div>
-
-        <div style="margin-top: 20px; text-align: center;">
-            <p>First time here? <a href="/register.html">Register your authentication method</a></p>
-        </div>
     </div>
 
     <script>
@@ -68,10 +104,11 @@
         if (userId) {
             document.getElementById('userInfo').style.display = 'block';
             document.getElementById('currentUser').textContent = userEmail || userId;
-            document.getElementById('loginPrompt').style.display = 'none';
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('paymentForm').style.display = 'block';
         } else {
             document.getElementById('userInfo').style.display = 'none';
-            document.getElementById('loginPrompt').style.display = 'block';
+            document.getElementById('authSection').style.display = 'block';
             document.getElementById('paymentForm').style.display = 'none';
         }
 

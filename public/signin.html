@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign In - Payment Authorization</title>
+    <style>
+        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
+        .info { color: #4444ff; }
+        .error { color: #ff4444; }
+        input, button {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+        }
+        button {
+            background: #4444ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #3333dd;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4444ff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sign In</h2>
+        <p class="info">Sign in with your registered email to authorize payments.</p>
+
+        <form id="signinForm">
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required 
+                       placeholder="Enter your registered email">
+            </div>
+            <button type="submit">Sign In</button>
+        </form>
+
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <p>
+            <a href="/" class="back-link">← Back to Payment Demo</a>
+        </p>
+        
+        <p style="margin-top: 20px; color: #666;">
+            Don't have an account? <a href="/register.html" style="color: #4444ff;">Register here</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('signinForm').onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch('/api/signin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+                
+                if (data.challengeUrl) {
+                    window.location.href = data.challengeUrl;
+                } else {
+                    throw new Error('No challenge URL received');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const errorDiv = document.getElementById('error');
+                errorDiv.textContent = 'Error: ' + error.message;
+                errorDiv.style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html> 
