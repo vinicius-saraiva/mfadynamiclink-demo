@@ -17,13 +17,15 @@ const pendingPayments = new Map();
 
 // Endpoint to initiate payment with MFA
 app.post('/api/payment/authorize', async (req, res) => {
-  const { userId, amount, beneficiaryId } = req.body;
+  const { userId, amount, currency, beneficiaryId, beneficiaryName } = req.body;
 
   console.log('\n=== PAYMENT AUTHORIZATION REQUEST ===');
   console.log('Payment Details:', {
     userId,
     amount,
-    beneficiaryId
+    currency,
+    beneficiaryId,
+    beneficiaryName
   });
 
   try {
@@ -33,7 +35,9 @@ app.post('/api/payment/authorize', async (req, res) => {
       redirectUrl: "http://localhost:3000/payment/complete",
       custom: {
         amount: amount,
+        currency: currency,
         beneficiaryId: beneficiaryId,
+        beneficiaryName: beneficiaryName,
         timestamp: new Date().toISOString()
       },
       ipAddress: req.ip,
@@ -55,7 +59,9 @@ app.post('/api/payment/authorize', async (req, res) => {
 
       const paymentData = {
         amount: amount,
+        currency: currency,
         beneficiaryId: beneficiaryId,
+        beneficiaryName: beneficiaryName,
         timestamp: new Date()
       };
       
