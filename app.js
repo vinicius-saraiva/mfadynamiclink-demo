@@ -1,5 +1,6 @@
 import express from 'express';
 import { Authsignal } from "@authsignal/node";
+import path from 'path';
 
 const app = express();
 app.use(express.json());
@@ -209,42 +210,36 @@ app.post('/api/enroll', async (req, res) => {
 });
 
 // Enrollment completion endpoint
-app.get('/enrollment/complete', async (req, res) => {
-  const token = req.query.token;
-  
-  try {
-    console.log('\n=== ENROLLMENT COMPLETION ===');
-    const result = await authsignal.validateChallenge({ token });
-    
-    if (result.state === "CHALLENGE_SUCCEEDED") {
-      // Get userId from the token payload
-      const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-      const userId = tokenPayload.sub; // 'sub' contains the userId
+app.get('/enrollment/complete', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/enrollment-complete.html'));
+});
 
-      return res.send(`
-        <h1>✅ Authentication Method Successfully Registered!</h1>
-        <p>You can now use this method to authorize payments.</p>
-        <script>
-          localStorage.setItem('authUserId', '${userId}');
-          localStorage.setItem('authUserEmail', '${result.email || ''}');
-        </script>
-        <a href="/" class="button">Start Making Payments</a>
-      `);
-    } else {
-      return res.send(`
-        <h1>❌ Registration Failed</h1>
-        <p>Please try again.</p>
-        <a href="/register.html">Try Again</a>
-      `);
+// Add a new endpoint to validate the enrollment
+app.post('/api/enrollment/validate', async (req, res) => {
+    const { token } = req.body;
+    
+    try {
+        const result = await authsignal.validateChallenge({ token });
+        
+        if (result.state === "CHALLENGE_SUCCEEDED") {
+            const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+            res.json({
+                success: true,
+                userId: tokenPayload.sub,
+                email: result.email || tokenPayload.sub
+            });
+        } else {
+            res.json({
+                success: false,
+                error: 'Challenge failed'
+            });
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.message
+        });
     }
-  } catch (error) {
-    console.error('Enrollment Error:', error);
-    res.send(`
-      <h1>Error During Registration</h1>
-      <p>${error.message}</p>
-      <a href="/register.html">Try Again</a>
-    `);
-  }
 });
 
 // New endpoint to handle sign in
@@ -280,42 +275,35 @@ app.post('/api/signin', async (req, res) => {
 });
 
 // Signin completion endpoint
-app.get('/signin/complete', async (req, res) => {
-    const token = req.query.token;
+app.get('/signin/complete', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/signin-complete.html'));
+});
+
+// Add validation endpoint for signin
+app.post('/api/signin/validate', async (req, res) => {
+    const { token } = req.body;
     
     try {
-        console.log('\n=== SIGNIN COMPLETION ===');
         const result = await authsignal.validateChallenge({ token });
         
         if (result.state === "CHALLENGE_SUCCEEDED") {
-            // Get userId/email from the token payload
             const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-            const userId = tokenPayload.sub;
-            const email = result.email;
-
-            return res.send(`
-                <h1>✅ Successfully Signed In!</h1>
-                <p>You can now authorize payments.</p>
-                <script>
-                    localStorage.setItem('authUserId', '${userId}');
-                    localStorage.setItem('authUserEmail', '${email || ''}');
-                    window.location.href = '/';
-                </script>
-            `);
+            res.json({
+                success: true,
+                userId: tokenPayload.sub,
+                email: result.email || tokenPayload.sub
+            });
         } else {
-            return res.send(`
-                <h1>❌ Sign In Failed</h1>
-                <p>Please try again.</p>
-                <a href="/signin.html">Try Again</a>
-            `);
+            res.json({
+                success: false,
+                error: 'Authentication failed'
+            });
         }
     } catch (error) {
-        console.error('Sign In Error:', error);
-        res.send(`
-            <h1>Error During Sign In</h1>
-            <p>${error.message}</p>
-            <a href="/signin.html">Try Again</a>
-        `);
+        res.json({
+            success: false,
+            error: error.message
+        });
     }
 });
 

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign In Complete</title>
+    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <div class="card" style="text-align: center;">
+            <div id="successCard" style="display: none;">
+                <div class="success-icon">✓</div>
+                
+                <h1 style="margin: 0 0 16px 0; color: var(--text-primary);">
+                    Successfully Signed In
+                </h1>
+                
+                <p style="color: var(--text-secondary); margin-bottom: 32px;">
+                    Your identity has been verified. You can now authorize payments.
+                </p>
+
+                <div class="details-grid" style="max-width: 300px; margin: 0 auto 32px auto;">
+                    <span class="label">Email</span>
+                    <span id="userEmail" class="value"></span>
+                    
+                    <span class="label">Status</span>
+                    <span class="value" style="color: var(--secondary-green);">Verified</span>
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <a href="/" class="button" style="min-width: 200px;">
+                        Continue to Payments
+                    </a>
+                </div>
+            </div>
+
+            <div id="errorCard" style="display: none;">
+                <div style="color: var(--error); font-size: 48px; margin-bottom: 24px;">❌</div>
+                
+                <h1 style="margin: 0 0 16px 0; color: var(--error);">
+                    Sign In Failed
+                </h1>
+                
+                <p id="errorMessage" style="color: var(--text-secondary); margin-bottom: 32px;">
+                    We couldn't verify your identity. Please try again.
+                </p>
+
+                <div style="margin-top: 16px;">
+                    <a href="/signin.html" class="button" style="min-width: 200px;">
+                        Try Again
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Switch -->
+    <div class="theme-switch" onclick="toggleTheme()" title="Toggle theme">
+        <span class="icon" id="themeIcon">☀️</span>
+    </div>
+
+    <script>
+        // Parse the token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        async function validateSignin() {
+            try {
+                const response = await fetch('/api/signin/validate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Store user data
+                    localStorage.setItem('authUserId', data.userId);
+                    localStorage.setItem('authUserEmail', data.email);
+
+                    // Update UI
+                    document.getElementById('userEmail').textContent = data.email;
+                    document.getElementById('successCard').style.display = 'block';
+                } else {
+                    document.getElementById('errorMessage').textContent = data.error;
+                    document.getElementById('errorCard').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorCard').style.display = 'block';
+            }
+        }
+
+        // Theme toggling functionality
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            document.getElementById('themeIcon').textContent = theme === 'dark' ? '🌙' : '☀️';
+        }
+
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+            setTheme(theme);
+        }
+
+        // Initialize
+        initTheme();
+        validateSignin();
+    </script>
+</body>
+</html> 
