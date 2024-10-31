@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Authentication Method</title>
+    <style>
+        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
+        .info { color: #4444ff; }
+        .error { color: #ff4444; }
+        input, button {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+        }
+        button {
+            background: #4444ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #3333dd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register Authentication Method</h2>
+        <p class="info">Register an authenticator app or passkey to secure your payments.</p>
+
+        <form id="enrollmentForm">
+            <div>
+                <label for="userId">User ID:</label>
+                <input type="text" id="userId" required 
+                       placeholder="Enter your user ID">
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required 
+                       placeholder="Enter your email">
+            </div>
+            <button type="submit">Register Authentication Method</button>
+        </form>
+
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <p style="margin-top: 20px;">
+            <a href="/">Back to Payment Demo</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('enrollmentForm').onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const userId = document.getElementById('userId').value;
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch('/api/enroll', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, email })
+                });
+
+                const data = await response.json();
+                
+                if (data.enrollmentUrl) {
+                    window.location.href = data.enrollmentUrl;
+                } else {
+                    throw new Error('No enrollment URL received');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const errorDiv = document.getElementById('error');
+                errorDiv.textContent = 'Error: ' + error.message;
+                errorDiv.style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html> 

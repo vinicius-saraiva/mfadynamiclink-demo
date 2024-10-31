@@ -16,9 +16,14 @@
 <body>
     <div class="container">
         <h2>Secure Payment Authorization Demo</h2>
-        <p class="info">This demo shows how MFA is dynamically linked to payment details. 
-           If you modify the amount or beneficiary after generating the MFA challenge, the authorization will fail.</p>
-
+        <div id="userInfo" style="margin-bottom: 20px; padding: 10px; background: #e8f5e9; border-radius: 5px; display: none;">
+            <p>Logged in as: <span id="currentUser"></span></p>
+            <button onclick="logout()" style="padding: 5px 10px;">Logout</button>
+        </div>
+        <div id="loginPrompt" style="margin-bottom: 20px; padding: 10px; background: #ffebee; border-radius: 5px; display: none;">
+            <p>Please register or login first</p>
+            <a href="/register.html" class="button">Register Authentication Method</a>
+        </div>
         <form id="paymentForm">
             <div>
                 <label for="amount">Amount:</label>
@@ -50,11 +55,41 @@
             <p>Beneficiary Name: <span id="confirmedBeneficiaryName"></span></p>
             <p class="warning">⚠️ Any attempt to modify these details after MFA generation will invalidate the authorization.</p>
         </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <p>First time here? <a href="/register.html">Register your authentication method</a></p>
+        </div>
     </div>
 
     <script>
+        const userId = localStorage.getItem('authUserId');
+        const userEmail = localStorage.getItem('authUserEmail');
+        
+        if (userId) {
+            document.getElementById('userInfo').style.display = 'block';
+            document.getElementById('currentUser').textContent = userEmail || userId;
+            document.getElementById('loginPrompt').style.display = 'none';
+        } else {
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('loginPrompt').style.display = 'block';
+            document.getElementById('paymentForm').style.display = 'none';
+        }
+
+        function logout() {
+            localStorage.removeItem('authUserId');
+            localStorage.removeItem('authUserEmail');
+            window.location.reload();
+        }
+
         document.getElementById('paymentForm').onsubmit = async (e) => {
             e.preventDefault();
+            
+            const userId = localStorage.getItem('authUserId');
+            if (!userId) {
+                alert('Please register first');
+                window.location.href = '/register.html';
+                return;
+            }
             
             const amount = document.getElementById('amount').value;
             const currency = document.getElementById('currency').value;
@@ -66,7 +101,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        userId: 'test-user-123',
+                        userId: userId,
                         amount: amount,
                         currency: currency,
                         beneficiaryId: beneficiaryId,

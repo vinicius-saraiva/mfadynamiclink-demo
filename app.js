@@ -161,6 +161,78 @@ app.get('/payment/complete', async (req, res) => {
   }
 });
 
+// New endpoint to initiate enrollment
+app.post('/api/enroll', async (req, res) => {
+  const { userId, email } = req.body;
+
+  console.log('\n=== ENROLLMENT REQUEST ===');
+  console.log('User Details:', { userId, email });
+
+  try {
+    const result = await authsignal.track({
+      userId: userId,
+      email: email,
+      action: "enroll",
+      redirectUrl: "http://localhost:3000/enrollment/complete",
+      verificationMethods: ["authenticator_app", "passkey"], // You can customize these methods
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent'],
+      forceChallenge: true
+    });
+
+    console.log('\n=== ENROLLMENT TRACK RESPONSE ===');
+    console.log('State:', result.state);
+    console.log('Challenge URL:', result.url);
+
+    res.json({
+      enrollmentUrl: result.url
+    });
+  } catch (error) {
+    console.error('\n=== ENROLLMENT ERROR ===');
+    console.error('Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Enrollment completion endpoint
+app.get('/enrollment/complete', async (req, res) => {
+  const token = req.query.token;
+  
+  try {
+    console.log('\n=== ENROLLMENT COMPLETION ===');
+    const result = await authsignal.validateChallenge({ token });
+    
+    if (result.state === "CHALLENGE_SUCCEEDED") {
+      // Get userId from the token payload
+      const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+      const userId = tokenPayload.sub; // 'sub' contains the userId
+
+      return res.send(`
+        <h1>✅ Authentication Method Successfully Registered!</h1>
+        <p>You can now use this method to authorize payments.</p>
+        <script>
+          localStorage.setItem('authUserId', '${userId}');
+          localStorage.setItem('authUserEmail', '${result.email || ''}');
+        </script>
+        <a href="/" class="button">Start Making Payments</a>
+      `);
+    } else {
+      return res.send(`
+        <h1>❌ Registration Failed</h1>
+        <p>Please try again.</p>
+        <a href="/register.html">Try Again</a>
+      `);
+    }
+  } catch (error) {
+    console.error('Enrollment Error:', error);
+    res.send(`
+      <h1>Error During Registration</h1>
+      <p>${error.message}</p>
+      <a href="/register.html">Try Again</a>
+    `);
+  }
+});
+
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 }); 
