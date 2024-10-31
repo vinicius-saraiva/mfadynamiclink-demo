@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Status</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 40px auto; 
+            padding: 20px; 
+        }
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success-icon {
+            color: #28a745;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+            margin: 24px 0;
+        }
+        .label {
+            font-weight: bold;
+            color: #666;
+        }
+        .value {
+            color: #333;
+        }
+        .divider {
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #4444ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .button:hover {
+            background: #3333dd;
+        }
+        .auth-details {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .error-card {
+            background: #fff5f5;
+            text-align: center;
+        }
+        #successCard, #errorCard {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Success Card -->
+        <div id="successCard" class="card">
+            <div class="success-icon">✅</div>
+            <h1 style="text-align: center; color: #28a745; margin: 0 0 24px 0;">
+                Payment Successfully Authorized
+            </h1>
+            
+            <div class="details-grid">
+                <span class="label">Amount:</span>
+                <span id="amount" class="value"></span>
+                
+                <span class="label">Beneficiary:</span>
+                <span id="beneficiaryName" class="value"></span>
+                
+                <span class="label">Beneficiary ID:</span>
+                <span id="beneficiaryId" class="value"></span>
+                
+                <span class="label">Timestamp:</span>
+                <span id="timestamp" class="value"></span>
+            </div>
+
+            <div class="divider"></div>
+            
+            <div class="auth-details">
+                <p style="margin: 0;">
+                    <strong>Authentication Method:</strong> 
+                    <span id="authMethod"></span>
+                </p>
+                <p style="margin: 4px 0 0 0;">
+                    <strong>Transaction ID:</strong> 
+                    <span id="transactionId"></span>
+                </p>
+                <p style="margin: 4px 0 0 0;">
+                    <strong>Transactions Today:</strong> 
+                    <span id="transactionsToday"></span>
+                </p>
+                <p style="margin: 4px 0 0 0;">
+                    <strong>Last Verified:</strong> 
+                    <span id="lastVerified"></span>
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="/" class="button">Make Another Payment</a>
+            </div>
+        </div>
+
+        <!-- Error Card -->
+        <div id="errorCard" class="card error-card">
+            <h1 style="color: #dc3545; margin-top: 0;">❌ Authorization Failed</h1>
+            <p id="errorMessage">The payment could not be authorized.</p>
+            <a href="/" class="button">Try Again</a>
+        </div>
+    </div>
+
+    <script>
+        async function init() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            try {
+                const response = await fetch(`/payment/complete?token=${token}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    // Format amount and timestamp
+                    const amount = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: data.paymentDetails.currency
+                    }).format(data.paymentDetails.amount);
+                    
+                    const timestamp = new Date(data.paymentDetails.timestamp)
+                        .toLocaleString();
+
+                    // Format the last verified date
+                    const lastVerified = new Date(data.actionDetails.output.user.lastVerifiedAt)
+                        .toLocaleString();
+
+                    // Update success card
+                    document.getElementById('amount').textContent = amount;
+                    document.getElementById('beneficiaryName').textContent = 
+                        data.paymentDetails.beneficiaryName;
+                    document.getElementById('beneficiaryId').textContent = 
+                        data.paymentDetails.beneficiaryId;
+                    document.getElementById('timestamp').textContent = timestamp;
+                    document.getElementById('authMethod').textContent = 
+                        data.verificationMethod;
+                    document.getElementById('transactionId').textContent = 
+                        data.actionDetails.output.action.idempotencyKey;
+                    document.getElementById('transactionsToday').textContent = 
+                        data.actionDetails.output.action.countInLastDay;
+                    document.getElementById('lastVerified').textContent = lastVerified;
+
+                    document.getElementById('successCard').style.display = 'block';
+                } else {
+                    document.getElementById('errorMessage').textContent = 
+                        data.error || 'The payment could not be authorized.';
+                    document.getElementById('errorCard').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').textContent = 
+                    'An unexpected error occurred.';
+                document.getElementById('errorCard').style.display = 'block';
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html> 

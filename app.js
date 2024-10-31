@@ -32,7 +32,7 @@ app.post('/api/payment/authorize', async (req, res) => {
     const result = await authsignal.track({
       userId: userId,
       action: "payment_authorization",
-      redirectUrl: "http://localhost:3000/payment/complete",
+      redirectUrl: "http://localhost:3000/payment-complete.html",
       custom: {
         amount: amount,
         currency: currency,
@@ -125,39 +125,53 @@ app.get('/payment/complete', async (req, res) => {
   
   try {
     console.log('\n=== PAYMENT COMPLETION REQUEST ===');
-    console.log('Received Token:', token);
-
     const result = await authsignal.validateChallenge({ token });
     
-    console.log('\n=== VALIDATION RESULT ===');
-    console.log(JSON.stringify(result, null, 2));
-
-    // Return a simple success or failure page based on the challenge state
     if (result.state === "CHALLENGE_SUCCEEDED") {
-      return res.send(`
-        <h1>Payment Successfully Authorized!</h1>
-        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-          ${JSON.stringify(result, null, 2)}
-        </pre>
-        <a href="/">Make another payment</a>
-      `);
+      const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+      const userId = tokenPayload.sub;
+      const idempotencyKey = tokenPayload.other?.idempotencyKey;
+
+      console.log('\n=== ACTION DETAILS REQUEST ===');
+      console.log('UserId:', userId);
+      console.log('IdempotencyKey:', idempotencyKey);
+
+      const actionDetails = await authsignal.getAction({
+        userId: userId,
+        action: "payment_authorization",
+        idempotencyKey: idempotencyKey
+      });
+
+      console.log('\n=== ACTION DETAILS RESPONSE ===');
+      console.log('Action Details:', actionDetails);
+
+      // Get payment details from our stored map
+      const paymentDetails = pendingPayments.get(idempotencyKey);
+      
+      if (!paymentDetails) {
+        throw new Error('Payment details not found');
+      }
+
+      res.json({
+        success: true,
+        verificationMethod: result.verificationMethod,
+        state: actionDetails.state,
+        paymentDetails: paymentDetails,
+        actionDetails: actionDetails
+      });
     } else {
-      return res.send(`
-        <h1>Challenge Failed</h1>
-        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-          ${JSON.stringify(result, null, 2)}
-        </pre>
-        <a href="/">Try again</a>
-      `);
+      res.json({
+        success: false,
+        error: 'Challenge failed'
+      });
     }
   } catch (error) {
     console.error('\n=== VALIDATION ERROR ===');
     console.error('Error:', error);
-    res.send(`
-      <h1>Error During Validation</h1>
-      <p>${error.message}</p>
-      <a href="/">Try again</a>
-    `);
+    res.json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
