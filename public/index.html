@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Payment Authorization</h2>
+  <form id="paymentForm">
+    <input type="text" id="amount" placeholder="Amount">
+    <input type="text" id="beneficiaryId" placeholder="Beneficiary ID">
+    <button type="submit">Authorize Payment</button>
+  </form>
+
+  <div id="debug" style="margin-top: 20px;">
+    <p id="debugUrl"></p>
+    <button id="testRedirect" style="display: none;">Test Redirect</button>
+  </div>
+
+  <script>
+    document.getElementById('paymentForm').onsubmit = async (e) => {
+      e.preventDefault();
+      
+      try {
+        const response = await fetch('/api/payment/authorize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: 'test-user-123',
+            amount: document.getElementById('amount').value,
+            beneficiaryId: document.getElementById('beneficiaryId').value
+          })
+        });
+
+        const data = await response.json();
+        console.log('Server response:', data);
+
+        if (data.requiresChallenge && data.challengeUrl) {
+          document.getElementById('debugUrl').textContent = 
+            'Challenge URL: ' + data.challengeUrl;
+          
+          const testButton = document.getElementById('testRedirect');
+          testButton.style.display = 'block';
+          testButton.onclick = () => window.location.replace(data.challengeUrl);
+
+          window.location.replace(data.challengeUrl);
+        } else if (data.status === 'approved') {
+          alert('Payment authorized without MFA!');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error during authorization: ' + error.message);
+      }
+    };
+  </script>
+</body>
+</html> 

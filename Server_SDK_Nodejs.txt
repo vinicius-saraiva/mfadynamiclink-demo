@@ -1,0 +1,256 @@
+Server
+Node.js
+Learn how to use the Authsignal Node.js SDK.
+
+​
+Installation
+
+npm install @authsignal/node
+​
+Initialization
+
+import { Authsignal } from "@authsignal/node";
+
+const authsignal = new Authsignal({ secret: "YOUR_SECRET_KEY" });
+You can find your client or tenant ID in the Authsignal Portal.
+
+You must specify the correct base URL for your tenant’s region.
+
+Region	Base URL
+US (Oregon)	https://api.authsignal.com/v1
+AU (Sydney)	https://au.api.authsignal.com/v1
+EU (Dublin)	https://eu.api.authsignal.com/v1
+For example, to set the base URL to use our AU region:
+
+
+import { Authsignal } from "@authsignal/node";
+
+const authsignal = new Authsignal({
+  secret: "YOUR_SECRET_KEY",
+  apiBaseUrl: "https://au.api.authsignal.com/v1",
+});
+​
+track
+track lets you record actions performed by users and initiate challenges.
+
+
+const result = await authsignal.track({
+  userId: "usr_123",
+  action: "withdrawal",
+  redirectUrl: "https://example.com/finalize-withdrawal",
+});
+
+if (result.state === "CHALLENGE_REQUIRED") {
+  // The user should be presented with a challenge
+}
+​
+Arguments
+userId
+string
+required
+The unique ID of the user in your database or IdP.
+action
+string
+required
+A short human-readable code which defines the action the user is performing, e.g. 'signIn'.
+redirectUrl
+string
+The URL which the user will be redirected to after completing a challenge via the pre-built UI. Only required when using Authsignal's pre-built UI.
+redirectToSettings
+boolean
+If set to true, the user will be redirected to the authentication settings screen after completing a challenge. Use this flag to allow users to manage their own authenticators through Authsignal's pre-built UI.
+email
+string
+The user's email address.
+phoneNumber
+string
+The user's phone number in E.164 format.
+ipAddress
+string
+The user's IP address. Should be provided when using rules based on location or other IP-derived features.
+userAgent
+string
+The user agent identifying a browser or app. Should be provided when using rules based on device.
+deviceId
+string
+An ID which identifies the user's device. Should be provided when using rules based on device.
+custom
+object
+A JSON object which can include any key/value pairs. Should be provided when using rules based on custom data points from your own app.
+​
+Returns
+state
+enum<string>
+required
+The current state of the action. The possible values are: CHALLENGE_REQUIRED, CHALLENGE_FAILED, CHALLENGE_SUCCEEDED, ALLOW, or BLOCK.
+url
+string
+required
+The URL for initiating a challenge using Authsignal's pre-built UI. You can redirect to this URL if the state determines that a challenge is required, or if you want to allow the user to enroll or to manage their existing authenticator settings.
+token
+string
+required
+A short-lived token which can be passed to Authsignal's client SDKs (e.g. when using passkeys) or to authenticate to Authsignal's client API.
+isEnrolled
+boolean
+required
+True if the user is enrolled with at least one verification method and can be challenged.
+idempotencyKey
+string
+required
+A unique key which identifies a particular action. This key can be used to determine if the user has successfully completed a challenge.
+enrolledVerificationMethods
+enum<string>[]
+The subset of allowed verification methods for the action which the user has already enrolled. Available options: SMS, AUTHENTICATOR_APP, EMAIL_MAGIC_LINK, EMAIL_OTP, PUSH, SECURITY_KEY, PASSKEY, VERIFF, IPROOV, PALM_BIOMETRICS_RR, IDVERSE
+allowedVerificationMethods
+enum<string>[]
+The list of allowed verification methods for the action. Available options: SMS, AUTHENTICATOR_APP, EMAIL_MAGIC_LINK, EMAIL_OTP, PUSH, SECURITY_KEY, PASSKEY, VERIFF, IPROOV, PALM_BIOMETRICS_RR, IDVERSE
+ruleIds
+string[]
+The IDs of the triggered rules.
+​
+validateChallenge
+validateChallenge lets you validate the result of a challenge using the token which is obtained after a redirect (if using the pre-built UI) or returned by a client SDK (if using an embedded flow).
+
+
+const result = await authsignal.validateChallenge({ token });
+
+if (result.state === "CHALLENGE_SUCCEEDED") {
+  // The user completed the challenge successfully
+}
+When performing MFA for a user who has already been authenticated by a primary factor (e.g. username & password), it’s important to check the token belongs to that user. The validateChallenge method will do this check if you pass both the token and the userId.
+
+​
+Arguments
+token
+string
+required
+The token obtained after a redirect (if using the pre-built UI) or returned by a client SDK (if using an embedded flow).
+userId
+string
+The ID of the user. Only pass this if doing step-up auth on an existing user session (i.e. not for login).
+​
+Returns
+isValid
+boolean
+required
+True if the challenge was completed successfully.
+state
+enum<string>
+The current state of the action. The possible values are: CHALLENGE_REQUIRED, CHALLENGE_FAILED, CHALLENGE_SUCCEEDED, ALLOW, or BLOCK.
+userId
+string
+The ID of the user.
+​
+getUser
+getUser retrieves a user and their MFA enrollment status.
+
+
+const result = await authsignal.getUser({ userId: "usr_123" });
+
+if (result.isEnrolled) {
+  // The user has set up MFA and can be challenged
+} else {
+  // The user has either not set up MFA or they have disabled it
+}
+​
+Arguments
+userId
+string
+required
+The unique ID of the user in your database or IdP.
+​
+Returns
+isEnrolled
+boolean
+required
+True if the user is enrolled with at least one verification method and can be challenged.
+email
+string
+The user's email address.
+phoneNumber
+string
+The user's phone number in E.164 format.
+enrolledVerificationMethods
+enum<string>[]
+The list of verification methods which the user has enrolled. Available options: SMS, AUTHENTICATOR_APP, EMAIL_MAGIC_LINK, EMAIL_OTP, PUSH, SECURITY_KEY, PASSKEY, VERIFF, IPROOV, PALM_BIOMETRICS_RR, IDVERSE
+allowedVerificationMethods
+enum<string>[]
+The list of verification methods which the user is permitted to enroll. Available options: SMS, AUTHENTICATOR_APP, EMAIL_MAGIC_LINK, EMAIL_OTP, PUSH, SECURITY_KEY, PASSKEY, VERIFF, IPROOV, PALM_BIOMETRICS_RR, IDVERSE
+​
+getAction
+Get detailed information on a tracked action.
+
+
+const result = await authsignal.getAction({
+  userId: "usr_123",
+  action: "signIn",
+  idempotencyKey: "ik_123",
+});
+​
+Arguments
+userId
+string
+required
+The unique ID of the user in your database or IdP.
+action
+string
+required
+The code defining the action which was tracked.
+idempotencyKey
+string
+required
+The unique key which identifies the particular action which was tracked.
+​
+Returns
+state
+enum<string>
+required
+The current state of the action. The possible values are: CHALLENGE_REQUIRED, CHALLENGE_FAILED, CHALLENGE_SUCCEEDED, ALLOW, or BLOCK.
+verificationMethod
+enum<string>
+The verification method used to complete the challenge. Available options: SMS, AUTHENTICATOR_APP, EMAIL_MAGIC_LINK, EMAIL_OTP, PUSH, SECURITY_KEY, PASSKEY, VERIFF, IPROOV, PALM_BIOMETRICS_RR, IDVERSE
+ruleIds
+string[]
+The IDs of the triggered rules.
+rules
+object[]
+The triggered rules.
+
+Show child attributes
+
+​
+enrollVerifiedAuthenticator
+enrollVerifiedAuthenticator can be used to enroll an authenticator on behalf of a user if it has already been verified.
+
+
+await authsignal.enrollVerifiedAuthenticator({
+  userId: "usr_123",
+  oobChannel: "SMS",
+  phoneNumber: "+64271234567",
+});
+​
+Arguments
+userId
+string
+required
+The unique ID of the user in your database or IdP.
+oobChannel
+enum<string>
+required
+The channel of the out-of-band (OOB) authenticator. The possible values are: EMAIL_MAGIC_LINK, EMAIL_OTP, or SMS.
+phoneNumber
+string
+The user's verified phone number in E.164 format.
+email
+string
+The user's verified email address.
+isDefault
+boolean
+Whether the authenticator should be set as the default for the user.
+​
+Returns
+authenticator
+object
+recoveryCodes
+string[]
