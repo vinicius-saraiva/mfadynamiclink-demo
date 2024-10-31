@@ -1,0 +1,198 @@
+:root {
+  /* Light Mode Colors */
+  --primary-blue: #007AFF;
+  --secondary-green: #34C759;
+  --accent-yellow: #FFD60A;
+  --background: #F4F5F7;
+  --surface: #FFFFFF;
+  --text-primary: #1C1C1E;
+  --text-secondary: #6B7280;
+  --error: #FF3B30;
+  --border: #E5E7EB;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-blue: #0A84FF;
+    --secondary-green: #30D158;
+    --background: #1C1C1E;
+    --surface: #2C2C2E;
+    --text-primary: #F2F2F7;
+    --text-secondary: #A3A3A3;
+    --border: #3D3D3D;
+  }
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 24px;
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.button.secondary {
+  background: var(--secondary-green);
+}
+
+.button.outline {
+  background: transparent;
+  border: 2px solid var(--primary-blue);
+  color: var(--primary-blue);
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 16px;
+  transition: border-color 0.2s;
+  margin-bottom: 16px;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--secondary-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  color: white;
+  font-size: 24px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+/* Add more styles as needed */
+
+/* Add these styles to your existing styles.css */
+
+.theme-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    padding: 8px 12px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.theme-switch:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.theme-switch .icon {
+    font-size: 18px;
+}
+
+/* Add this to handle the theme in JS */
+[data-theme="dark"] {
+    --primary-blue: #0A84FF;
+    --secondary-green: #30D158;
+    --background: #1C1C1E;
+    --surface: #2C2C2E;
+    --text-primary: #F2F2F7;
+    --text-secondary: #A3A3A3;
+    --border: #3D3D3D;
+}
+
+[data-theme="light"] {
+    --primary-blue: #007AFF;
+    --secondary-green: #34C759;
+    --accent-yellow: #FFD60A;
+    --background: #F4F5F7;
+    --surface: #FFFFFF;
+    --text-primary: #1C1C1E;
+    --text-secondary: #6B7280;
+    --border: #E5E7EB;
+}

@@ -1,99 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
-        .payment-details { 
-            background: #f5f5f5; 
-            padding: 15px; 
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-        .warning { color: #ff4444; }
-        .info { color: #4444ff; }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            opacity: 0.9;
-        }
-        #authSection {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 30px;
-        }
-    </style>
+    <title>Secure Payment Authorization</title>
+    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
-        <h2>Secure Payment Authorization Demo</h2>
-        <div id="userInfo" style="margin-bottom: 20px; padding: 10px; background: #e8f5e9; border-radius: 5px; display: none;">
-            <p>Logged in as: <span id="currentUser"></span></p>
-            <button onclick="logout()" style="padding: 5px 10px;">Logout</button>
-        </div>
-        <div id="authSection" style="margin-bottom: 20px; text-align: center; display: none;">
-            <h3>Welcome to Payment Authorization Demo</h3>
-            <p>Please sign in or create a new account to continue</p>
+        <div class="card">
+            <h2 style="margin-top: 0;">Secure Payment Authorization</h2>
             
-            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
-                <a href="/signin.html" class="button" style="
-                    padding: 10px 20px;
-                    background: #4444ff;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    flex: 1;
-                    max-width: 200px;">
-                    Sign In
-                </a>
-                <a href="/register.html" class="button" style="
-                    padding: 10px 20px;
-                    background: #44aa44;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    flex: 1;
-                    max-width: 200px;">
-                    Sign Up
-                </a>
+            <!-- User Info Card -->
+            <div id="userInfo" class="card" style="background: var(--secondary-green); color: white; margin-bottom: 24px; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <p style="margin: 0;">
+                        <span style="opacity: 0.9;">Logged in as:</span> 
+                        <strong id="currentUser"></strong>
+                    </p>
+                    <button onclick="logout()" class="button outline" style="margin: 0; padding: 8px 16px; color: white; border-color: white;">
+                        Logout
+                    </button>
+                </div>
             </div>
-        </div>
-        <form id="paymentForm">
-            <div>
-                <label for="amount">Amount:</label>
-                <input type="number" id="amount" required min="1" step="0.01">
-            </div>
-            <div style="margin-top: 10px;">
-                <label for="currency">Currency:</label>
-                <select id="currency" required>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                    <option value="BRL">BRL</option>
-                </select>
-            </div>
-            <div style="margin-top: 10px;">
-                <label for="beneficiaryId">Beneficiary ID:</label>
-                <input type="text" id="beneficiaryId" required>
-            </div>
-            <div style="margin-top: 10px;">
-                <label for="beneficiaryName">Beneficiary Name:</label>
-                <input type="text" id="beneficiaryName" required>
-            </div>
-            <button type="submit" style="margin-top: 20px;">Authorize Payment</button>
-        </form>
 
-        <div class="payment-details" id="paymentDetails" style="display: none;">
-            <h3>Payment Details Being Authorized:</h3>
-            <p>Amount: <span id="confirmedAmount"></span> <span id="confirmedCurrency"></span></p>
-            <p>Beneficiary ID: <span id="confirmedBeneficiary"></span></p>
-            <p>Beneficiary Name: <span id="confirmedBeneficiaryName"></span></p>
-            <p class="warning">⚠️ Any attempt to modify these details after MFA generation will invalidate the authorization.</p>
+            <!-- Auth Section -->
+            <div id="authSection" style="text-align: center; display: none;">
+                <h3>Welcome to Payment Authorization</h3>
+                <p style="color: var(--text-secondary);">Please sign in or create a new account to continue</p>
+                
+                <div style="display: flex; gap: 16px; margin-top: 24px;">
+                    <a href="/signin.html" class="button" style="flex: 1;">Sign In</a>
+                    <a href="/register.html" class="button secondary" style="flex: 1;">Sign Up</a>
+                </div>
+            </div>
+
+            <!-- Payment Form -->
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <div style="display: flex; gap: 16px;">
+                        <input type="number" id="amount" required min="1" step="0.01" style="flex: 2;">
+                        <select id="currency" required style="flex: 1;">
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="BRL">BRL</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="beneficiaryId">Beneficiary ID</label>
+                    <input type="text" id="beneficiaryId" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="beneficiaryName">Beneficiary Name</label>
+                    <input type="text" id="beneficiaryName" required>
+                </div>
+
+                <button type="submit" class="button" style="width: 100%;">
+                    Authorize Payment
+                </button>
+            </form>
+
+            <!-- Payment Details -->
+            <div id="paymentDetails" class="card" style="display: none; margin-top: 24px; background: var(--background);">
+                <h3 style="margin-top: 0;">Payment Details Being Authorized</h3>
+                
+                <div class="details-grid">
+                    <span class="label">Amount:</span>
+                    <span class="value">
+                        <span id="confirmedAmount"></span>
+                        <span id="confirmedCurrency"></span>
+                    </span>
+
+                    <span class="label">Beneficiary ID:</span>
+                    <span id="confirmedBeneficiary" class="value"></span>
+
+                    <span class="label">Beneficiary Name:</span>
+                    <span id="confirmedBeneficiaryName" class="value"></span>
+                </div>
+
+                <div style="margin-top: 16px; padding: 12px; background: rgba(255, 214, 10, 0.1); border-radius: 8px;">
+                    <p style="margin: 0; color: var(--text-primary);">
+                        <span style="color: var(--accent-yellow);">⚠️</span>
+                        Any attempt to modify these details after MFA generation will invalidate the authorization.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -179,5 +173,35 @@
             }
         };
     </script>
+  
+    <!-- Theme Switch -->
+<div class="theme-switch" onclick="toggleTheme()" title="Toggle theme">
+  <span class="icon" id="themeIcon">☀️</span>
+</div>
+
+<script>
+  // Theme toggling functionality
+  function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      document.getElementById('themeIcon').textContent = theme === 'dark' ? '🌙' : '☀️';
+  }
+
+  function toggleTheme() {
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      setTheme(newTheme);
+  }
+
+  // Initialize theme
+  function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      setTheme(theme);
+  }
+
+  initTheme();
+</script>
 </body>
 </html> 

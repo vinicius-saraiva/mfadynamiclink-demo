@@ -2,69 +2,70 @@
 <html>
 <head>
     <title>Sign In - Payment Authorization</title>
-    <style>
-        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
-        .info { color: #4444ff; }
-        .error { color: #ff4444; }
-        input, button {
-            display: block;
-            margin: 10px 0;
-            padding: 8px;
-            width: 100%;
-        }
-        button {
-            background: #4444ff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #3333dd;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #4444ff;
-            text-decoration: none;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
-        <h2>Sign In</h2>
-        <p class="info">Sign in with your registered email to authorize payments.</p>
-
-        <form id="signinForm">
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" required 
-                       placeholder="Enter your registered email">
+        <div class="card">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h2 style="margin: 0 0 8px 0;">Welcome Back</h2>
+                <p style="color: var(--text-secondary); margin: 0;">
+                    Sign in with your registered email to authorize payments
+                </p>
             </div>
-            <button type="submit">Sign In</button>
-        </form>
 
-        <div id="error" class="error" style="display: none;"></div>
-        
-        <p>
-            <a href="/" class="back-link">← Back to Payment Demo</a>
-        </p>
-        
-        <p style="margin-top: 20px; color: #666;">
-            Don't have an account? <a href="/register.html" style="color: #4444ff;">Register here</a>
-        </p>
+            <!-- Sign In Form -->
+            <form id="signinForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" 
+                           id="email" 
+                           required 
+                           placeholder="Enter your registered email"
+                           autocomplete="email">
+                </div>
+
+                <button type="submit" class="button" style="width: 100%;">
+                    Continue with Email
+                </button>
+            </form>
+
+            <!-- Error Message -->
+            <div id="error" style="display: none; margin-top: 16px; padding: 12px; background: rgba(255, 59, 48, 0.1); border-radius: 8px; color: var(--error);">
+            </div>
+
+            <!-- Footer Links -->
+            <div style="margin-top: 24px; text-align: center;">
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                    Don't have an account? 
+                    <a href="/register.html" style="color: var(--primary-blue); text-decoration: none; font-weight: 500;">
+                        Create account
+                    </a>
+                </p>
+                
+                <a href="/" style="color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Payment Demo
+                </a>
+            </div>
+        </div>
     </div>
 
     <script>
         document.getElementById('signinForm').onsubmit = async (e) => {
             e.preventDefault();
-            
             const email = document.getElementById('email').value;
+            const errorDiv = document.getElementById('error');
+            const submitButton = e.target.querySelector('button[type="submit"]');
 
             try {
+                submitButton.disabled = true;
+                submitButton.innerHTML = 'Signing in...';
+                
                 const response = await fetch('/api/signin', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -80,11 +81,42 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
-                const errorDiv = document.getElementById('error');
-                errorDiv.textContent = 'Error: ' + error.message;
+                errorDiv.textContent = '⚠️ ' + (error.message || 'An error occurred during sign in');
                 errorDiv.style.display = 'block';
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Continue with Email';
             }
         };
     </script>
+    <!-- Theme Switch -->
+<div class="theme-switch" onclick="toggleTheme()" title="Toggle theme">
+    <span class="icon" id="themeIcon">☀️</span>
+</div>
+
+<script>
+    // Theme toggling functionality
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        document.getElementById('themeIcon').textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+
+    function toggleTheme() {
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+    }
+
+    // Initialize theme
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+        setTheme(theme);
+    }
+
+    initTheme();
+</script>
 </body>
 </html> 
