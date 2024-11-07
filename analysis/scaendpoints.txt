@@ -1,0 +1,300 @@
+Request authorize{
+    fetch("https://mfa-dynamic-linking-demonstration.onrender.com/api/payment/authorize", {
+    "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+        "cache-control": "no-cache",
+        "content-type": "application/json",
+        "pragma": "no-cache",
+        "priority": "u=1, i",
+        "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin"
+    },
+    "referrer": "https://mfa-dynamic-linking-demonstration.onrender.com/",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "body": "{\"userId\":\"jim@carrey.com\",\"amount\":\"1222\",\"currency\":\"EUR\",\"beneficiaryId\":\"One\",\"beneficiaryName\":\"Treasurer\"}",
+    "method": "POST",
+    "mode": "cors",
+    "credentials": "omit"
+    });
+    Response {
+        "requiresChallenge":true,
+        "challengeUrl":"https://mfa.authsignal.com/challenge/authenticator-app?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4&settings=false&redirectUrl=https%3A%2F%2Fmfa-dynamic-linking-demonstration.onrender.com%2Fpayment-complete.html",
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTg0MDM0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1In19.bqNV28MLFIHj7KtDYcNr53dXD6Gbphj9UBc0my-MQPY"
+    }
+}
+
+
+Request envelope{
+    fetch("https://o1187758.ingest.sentry.io/api/6519085/envelope/?sentry_key=5b09054b39be4183811ad7d29a0bd8c5&sentry_version=7&sentry_client=sentry.javascript.nextjs%2F7.85.0", {
+    "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+        "cache-control": "no-cache",
+        "content-type": "text/plain;charset=UTF-8",
+        "pragma": "no-cache",
+        "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site"
+    },
+    "referrer": "https://mfa.authsignal.com/",
+    "referrerPolicy": "origin",
+    "body": "{\"sent_at\":\"2024-11-07T12:44:14.981Z\",\"sdk\":{\"name\":\"sentry.javascript.nextjs\",\"version\":\"7.85.0\"}}\n{\"type\":\"session\"}\n{\"sid\":\"669a9fb23e4144eab8414a1bf4c70809\",\"init\":true,\"started\":\"2024-11-07T12:44:14.980Z\",\"timestamp\":\"2024-11-07T12:44:14.980Z\",\"status\":\"ok\",\"errors\":0,\"attrs\":{\"release\":\"b2cf87f930f9efdeff7255f547d104d18de0263d\",\"environment\":\"vercel-production\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36\"}}",
+    "method": "POST",
+    "mode": "cors",
+    "credentials": "omit"
+    }); ;
+    Response{
+        
+    }
+}
+
+Request init{
+    fetch("https://eu.signal.authsignal.com/v1/client/init", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4",
+    "cache-control": "no-cache",
+    "content-type": "application/json",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site"
+  },
+  "referrer": "https://mfa.authsignal.com/",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+}); ;
+    Response{
+        
+    }   
+}   
+
+
+Request user{
+    fetch("https://eu.signal.authsignal.com/v1/client/user", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0NDMsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTg0MDQzLCJhdWQiOiJodHRwczovL21mYS5hdXRoc2lnbmFsLmNvbSIsInNjb3BlIjoicmVhZDphdXRoZW50aWNhdG9ycyIsIm90aGVyIjp7InRlbmFudElkIjoiNGRjNDI0OWItYTNjZC00NjdkLTk5MmMtZDI2NjQ2Zjc4YzdkIiwicHVibGlzaGFibGVLZXkiOiI5MGJiNmMxNGM0MTE3YzI1MzViNGY4NTdkZjA1YjdkNCIsInVzZXJJZCI6ImppbUBjYXJyZXkuY29tIiwiYWN0aW9uQ29kZSI6InBheW1lbnRfYXV0aG9yaXphdGlvbiIsImlkZW1wb3RlbmN5S2V5IjoiOTRmZGYwNGQtNGU2Zi00ZDBhLTg2OGQtYzM5ZmJlM2RiYjgxIiwicmVnaW9uIjoiZXUiLCJ2ZXJpZmljYXRpb25NZXRob2RzIjoicGFzc2tleSBhdXRoZW50aWNhdG9yX2FwcCIsInByb21wdFRvRW5yb2xsVmVyaWZpY2F0aW9uTWV0aG9kcyI6IiIsIm5hbWUiOiJpQkYgU0EiLCJyZWRpcmVjdE9uU2Vzc2lvbkV4cGlyeSI6dHJ1ZX0sInN0YXRlIjpudWxsfQ.wHuUdXdXlME5Lf76ngOVsBZEtxSz2nCxdy9K3JIgNUM",
+    "cache-control": "no-cache",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site"
+  },
+  "referrer": "https://mfa.authsignal.com/",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": null,
+  "method": "GET",
+  "mode": "cors",
+  "credentials": "include"
+}); ;
+    Response{
+        
+    }
+}
+
+Request challenge{
+    fetch("https://mfa.authsignal.com/challenge/verification-method?verificationMethod=AUTHENTICATOR_APP&tenantId=4dc4249b-a3cd-467d-992c-d26646f78c7d&region=eu&_rsc=rnl5z", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "cache-control": "no-cache",
+    "next-router-prefetch": "1",
+    "next-router-state-tree": "%5B%22%22%2C%7B%22children%22%3A%5B%5B%22locale%22%2C%22en%22%2C%22d%22%5D%2C%7B%22children%22%3A%5B%5B%22tenantId_region%22%2C%224dc4249b-a3cd-467d-992c-d26646f78c7d_eu%22%2C%22d%22%5D%2C%7B%22children%22%3A%5B%22(protected)%22%2C%7B%22children%22%3A%5B%22challenge%22%2C%7B%22children%22%3A%5B%22authenticator-app%22%2C%7B%22children%22%3A%5B%22__PAGE__%3F%7B%5C%22token%5C%22%3A%5C%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4%5C%22%2C%5C%22settings%5C%22%3A%5C%22false%5C%22%2C%5C%22redirectUrl%5C%22%3A%5C%22https%3A%2F%2Fmfa-dynamic-linking-demonstration.onrender.com%2Fpayment-complete.html%5C%22%7D%22%2C%7B%7D%2C%22%2Fchallenge%2Fauthenticator-app%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4%26settings%3Dfalse%26redirectUrl%3Dhttps%253A%252F%252Fmfa-dynamic-linking-demonstration.onrender.com%252Fpayment-complete.html%22%2C%22refresh%22%5D%7D%5D%7D%5D%7D%5D%7D%2Cnull%2Cnull%2Ctrue%5D%7D%5D%7D%5D",
+    "next-url": "/en/4dc4249b-a3cd-467d-992c-d26646f78c7d_eu/challenge/authenticator-app",
+    "pragma": "no-cache",
+    "rsc": "1",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin"
+  },
+  "referrer": "https://mfa.authsignal.com/challenge/authenticator-app?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4&settings=false&redirectUrl=https%3A%2F%2Fmfa-dynamic-linking-demonstration.onrender.com%2Fpayment-complete.html",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": null,
+  "method": "GET",
+  "mode": "cors",
+  "credentials": "include"
+}); ;
+    Response{
+        
+    }
+}
+
+Request about{
+    fetch("https://mfa.authsignal.com/about-multi-factor-authentication?from=%2Fchallenge%2Fauthenticator-app&tenantId=4dc4249b-a3cd-467d-992c-d26646f78c7d&region=eu&_rsc=rnl5z", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "cache-control": "no-cache",
+    "next-router-prefetch": "1",
+    "next-router-state-tree": "%5B%22%22%2C%7B%22children%22%3A%5B%5B%22locale%22%2C%22en%22%2C%22d%22%5D%2C%7B%22children%22%3A%5B%5B%22tenantId_region%22%2C%224dc4249b-a3cd-467d-992c-d26646f78c7d_eu%22%2C%22d%22%5D%2C%7B%22children%22%3A%5B%22(protected)%22%2C%7B%22children%22%3A%5B%22challenge%22%2C%7B%22children%22%3A%5B%22authenticator-app%22%2C%7B%22children%22%3A%5B%22__PAGE__%3F%7B%5C%22token%5C%22%3A%5C%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4%5C%22%2C%5C%22settings%5C%22%3A%5C%22false%5C%22%2C%5C%22redirectUrl%5C%22%3A%5C%22https%3A%2F%2Fmfa-dynamic-linking-demonstration.onrender.com%2Fpayment-complete.html%5C%22%7D%22%2C%7B%7D%2C%22%2Fchallenge%2Fauthenticator-app%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4%26settings%3Dfalse%26redirectUrl%3Dhttps%253A%252F%252Fmfa-dynamic-linking-demonstration.onrender.com%252Fpayment-complete.html%22%2C%22refresh%22%5D%7D%5D%7D%5D%7D%5D%7D%2Cnull%2Cnull%2Ctrue%5D%7D%5D%7D%5D",
+    "next-url": "/en/4dc4249b-a3cd-467d-992c-d26646f78c7d_eu/challenge/authenticator-app",
+    "pragma": "no-cache",
+    "rsc": "1",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin"
+  },
+  "referrer": "https://mfa.authsignal.com/challenge/authenticator-app?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4&settings=false&redirectUrl=https%3A%2F%2Fmfa-dynamic-linking-demonstration.onrender.com%2Fpayment-complete.html",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": null,
+  "method": "GET",
+  "mode": "cors",
+  "credentials": "include"
+}); ;
+    Response{
+        
+    }
+}
+
+Request report{
+    fetch("https://o1187758.ingest.sentry.io/api/6519085/envelope/?sentry_key=5b09054b39be4183811ad7d29a0bd8c5&sentry_version=7&sentry_client=sentry.javascript.nextjs%2F7.85.0", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "cache-control": "no-cache",
+    "content-type": "text/plain;charset=UTF-8",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site"
+  },
+  "referrer": "https://mfa.authsignal.com/",
+  "referrerPolicy": "origin",
+  "body": "{}\n{\"type\":\"client_report\"}\n{\"timestamp\":1730983471.492,\"discarded_events\":[{\"reason\":\"sample_rate\",\"category\":\"transaction\",\"quantity\":1}]}",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "omit"
+}); ;
+    Response{
+        
+    }
+}
+
+Request vitals{
+    fetch("https://mfa.authsignal.com/_vercel/speed-insights/vitals", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "cache-control": "no-cache",
+    "content-type": "text/plain",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "no-cors",
+    "sec-fetch-site": "same-origin"
+  },
+  "referrer": "https://mfa.authsignal.com/challenge/authenticator-app?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0MzQsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTgzNTU0LCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInJlZ2lvbiI6ImV1IiwidmVyaWZpY2F0aW9uTWV0aG9kcyI6InBhc3NrZXkgYXV0aGVudGljYXRvcl9hcHAiLCJwcm9tcHRUb0Vucm9sbFZlcmlmaWNhdGlvbk1ldGhvZHMiOiIiLCJuYW1lIjoiaUJGIFNBIiwicmVkaXJlY3RPblNlc3Npb25FeHBpcnkiOnRydWV9fQ.8vNEjljl4TD1NLa49xs8CHDbatlx3BjJhc6fz5GUXe4&settings=false&redirectUrl=https%3A%2F%2Fmfa-dynamic-linking-demonstration.onrender.com%2Fpayment-complete.html",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+}); ;
+    Response{
+        
+    }
+}
+
+Request verify{
+    fetch("https://eu.signal.authsignal.com/v1/client/verify/totp", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0NDMsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTg0MDQzLCJhdWQiOiJodHRwczovL21mYS5hdXRoc2lnbmFsLmNvbSIsInNjb3BlIjoicmVhZDphdXRoZW50aWNhdG9ycyIsIm90aGVyIjp7InRlbmFudElkIjoiNGRjNDI0OWItYTNjZC00NjdkLTk5MmMtZDI2NjQ2Zjc4YzdkIiwicHVibGlzaGFibGVLZXkiOiI5MGJiNmMxNGM0MTE3YzI1MzViNGY4NTdkZjA1YjdkNCIsInVzZXJJZCI6ImppbUBjYXJyZXkuY29tIiwiYWN0aW9uQ29kZSI6InBheW1lbnRfYXV0aG9yaXphdGlvbiIsImlkZW1wb3RlbmN5S2V5IjoiOTRmZGYwNGQtNGU2Zi00ZDBhLTg2OGQtYzM5ZmJlM2RiYjgxIiwicmVnaW9uIjoiZXUiLCJ2ZXJpZmljYXRpb25NZXRob2RzIjoicGFzc2tleSBhdXRoZW50aWNhdG9yX2FwcCIsInByb21wdFRvRW5yb2xsVmVyaWZpY2F0aW9uTWV0aG9kcyI6IiIsIm5hbWUiOiJpQkYgU0EiLCJyZWRpcmVjdE9uU2Vzc2lvbkV4cGlyeSI6dHJ1ZX0sInN0YXRlIjpudWxsfQ.wHuUdXdXlME5Lf76ngOVsBZEtxSz2nCxdy9K3JIgNUM",
+    "cache-control": "no-cache",
+    "content-type": "application/json",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site"
+  },
+  "referrer": "https://mfa.authsignal.com/",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+}); ;
+    Response{
+        
+    }
+}
+
+Request challengeEvents{
+    fetch("https://eu.signal.authsignal.com/v1/client/challenge/events", {
+  "headers": {
+    "accept": "application/json",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0NjIsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTg0MDYyLCJpc3MiOiJodHRwczovL2NoYWxsZW5nZS5hdXRoc2lnbmFsLmNvbS80ZGM0MjQ5Yi1hM2NkLTQ2N2QtOTkyYy1kMjY2NDZmNzhjN2QiLCJhdWQiOiJodHRwczovL2NoYWxsZW5nZS5hdXRoc2lnbmFsLmNvbS80ZGM0MjQ5Yi1hM2NkLTQ2N2QtOTkyYy1kMjY2NDZmNzhjN2QiLCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMgYWRkOmF1dGhlbnRpY2F0b3JzIHVwZGF0ZTphdXRoZW50aWNhdG9ycyByZW1vdmU6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInVzZXJBdXRoZW50aWNhdG9ySWQiOiIxZTc1MDMwZS05OTM1LTRhNzktOGJjNS01MDdiZTkyMWZmZTIifSwic3RhdGUiOm51bGx9.Fb0NaTKYZ63iVdmgjkHuLWF1EcPf_EMhVL_4CkooXnk",
+    "content-type": "application/json",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\""
+  },
+  "referrer": "https://mfa.authsignal.com/",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+}); ;
+    Response{       
+        
+    }
+}
+
+Request paymentComplete{    
+fetch("https://mfa-dynamic-linking-demonstration.onrender.com/payment/complete?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0NjIsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTg0MDYyLCJpc3MiOiJodHRwczovL2NoYWxsZW5nZS5hdXRoc2lnbmFsLmNvbS80ZGM0MjQ5Yi1hM2NkLTQ2N2QtOTkyYy1kMjY2NDZmNzhjN2QiLCJhdWQiOiJodHRwczovL2NoYWxsZW5nZS5hdXRoc2lnbmFsLmNvbS80ZGM0MjQ5Yi1hM2NkLTQ2N2QtOTkyYy1kMjY2NDZmNzhjN2QiLCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMgYWRkOmF1dGhlbnRpY2F0b3JzIHVwZGF0ZTphdXRoZW50aWNhdG9ycyByZW1vdmU6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInVzZXJBdXRoZW50aWNhdG9ySWQiOiIxZTc1MDMwZS05OTM1LTRhNzktOGJjNS01MDdiZTkyMWZmZTIifSwic3RhdGUiOm51bGx9.Fb0NaTKYZ63iVdmgjkHuLWF1EcPf_EMhVL_4CkooXnk", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7",
+    "cache-control": "no-cache",
+    "pragma": "no-cache",
+    "priority": "u=1, i",
+    "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin"
+  },
+  "referrer": "https://mfa-dynamic-linking-demonstration.onrender.com/payment-complete.html?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODM0NjIsInN1YiI6ImppbUBjYXJyZXkuY29tIiwiZXhwIjoxNzMwOTg0MDYyLCJpc3MiOiJodHRwczovL2NoYWxsZW5nZS5hdXRoc2lnbmFsLmNvbS80ZGM0MjQ5Yi1hM2NkLTQ2N2QtOTkyYy1kMjY2NDZmNzhjN2QiLCJhdWQiOiJodHRwczovL2NoYWxsZW5nZS5hdXRoc2lnbmFsLmNvbS80ZGM0MjQ5Yi1hM2NkLTQ2N2QtOTkyYy1kMjY2NDZmNzhjN2QiLCJzY29wZSI6InJlYWQ6YXV0aGVudGljYXRvcnMgYWRkOmF1dGhlbnRpY2F0b3JzIHVwZGF0ZTphdXRoZW50aWNhdG9ycyByZW1vdmU6YXV0aGVudGljYXRvcnMiLCJvdGhlciI6eyJ0ZW5hbnRJZCI6IjRkYzQyNDliLWEzY2QtNDY3ZC05OTJjLWQyNjY0NmY3OGM3ZCIsInB1Ymxpc2hhYmxlS2V5IjoiOTBiYjZjMTRjNDExN2MyNTM1YjRmODU3ZGYwNWI3ZDQiLCJ1c2VySWQiOiJqaW1AY2FycmV5LmNvbSIsImFjdGlvbkNvZGUiOiJwYXltZW50X2F1dGhvcml6YXRpb24iLCJpZGVtcG90ZW5jeUtleSI6Ijk0ZmRmMDRkLTRlNmYtNGQwYS04NjhkLWMzOWZiZTNkYmI4MSIsInVzZXJBdXRoZW50aWNhdG9ySWQiOiIxZTc1MDMwZS05OTM1LTRhNzktOGJjNS01MDdiZTkyMWZmZTIifSwic3RhdGUiOm51bGx9.Fb0NaTKYZ63iVdmgjkHuLWF1EcPf_EMhVL_4CkooXnk",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": null,
+  "method": "GET",
+  "mode": "cors",
+  "credentials": "omit"
+}); ;
+    Response{
+        {"success":true,"verificationMethod":"AUTHENTICATOR_APP","state":"CHALLENGE_SUCCEEDED","paymentDetails":{"amount":"1222","currency":"EUR","beneficiaryId":"One","beneficiaryName":"Treasurer","timestamp":"2024-11-07T12:43:54.100Z"},"actionDetails":{"state":"CHALLENGE_SUCCEEDED","ruleIds":["a5486a3e-d184-4222-9550-a74ef0c0e2b3"],"rules":[{"ruleId":"a5486a3e-d184-4222-9550-a74ef0c0e2b3","name":"Amount"}],"stateUpdatedAt":"2024-11-07T12:44:22.478Z","createdAt":"2024-11-07T12:43:54.033Z","verificationMethod":"AUTHENTICATOR_APP","output":{"userAuthenticator":{"count":1,"methods":["AUTHENTICATOR_APP"]},"lists":{},"ip":{"isAnonymous":false,"address":"::1"},"custom":{"amount":"1222","currency":"EUR","beneficiaryName":"Treasurer","beneficiaryId":"One","timestamp":"2024-11-07T12:43:53.888Z"},"action":{"initiatedAt":"2024-11-07T12:43:54.013Z","countInLastDay":0,"code":"payment_authorization","countInLastHour":0,"idempotencyKey":"94fdf04d-4e6f-4d0a-868d-c39fbe3dbb81"},"user":{"id":"jim@carrey.com","lastVerifiedAt":"2024-11-07T12:43:25.115Z","email":"jim@carrey.com","hasVerified":true},"device":{"count":0,"isBot":false,"userAgent":{"cpu":{"architecture":"amd64"},"userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36","os":{"name":"Windows","version":"10"},"engine":{"name":"Blink","version":"130.0.0.0"},"device":{},"browser":{"name":"Chrome","major":"130","version":"130.0.0.0"}},"isNew":true},"tenant":{"id":"4dc4249b-a3cd-467d-992c-d26646f78c7d"},"transaction":{},"crypto":{}}}}
+    }
+}   

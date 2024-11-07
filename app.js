@@ -132,6 +132,8 @@ app.get('/payment/complete', async (req, res) => {
   try {
     console.log('\n=== PAYMENT COMPLETION REQUEST ===');
     const result = await authsignal.validateChallenge({ token });
+    // Log the token for debugging (ensure this is ONLY in a test environment)
+    console.log('AuthSignal ValidateChallenge Token:', token);
     
     if (result.state === "CHALLENGE_SUCCEEDED") {
       const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
