@@ -54,7 +54,7 @@ app.post('/api/payment/authorize', async (req, res) => {
     console.log('\n=== AUTHSIGNAL TRACK RESPONSE ===');
     console.log('State:', result.state);
     console.log('Challenge URL:', result.url);
-    console.log('Token:', result.token);
+    console.log('TOTP Challenge Token:', result.token);
 
     if (result.state === "CHALLENGE_REQUIRED") {
       // Parse the token to get the idempotencyKey
@@ -109,19 +109,58 @@ app.post('/api/payment/validate', async (req, res) => {
   try {
     const result = await authsignal.validateChallenge({ token });
 
+    console.log('\n=== PAYMENT COMPLETION REQUEST ===');
+    console.log('TOTP Validation Token:', token);
+
     if (result.state === "CHALLENGE_SUCCEEDED") {
-      // Process the payment here
+      const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+      const userId = tokenPayload.sub;
+      const idempotencyKey = tokenPayload.other?.idempotencyKey;
+
+      console.log('\n=== ACTION DETAILS REQUEST ===');
+      console.log('UserId:', userId);
+      console.log('IdempotencyKey:', idempotencyKey);
+
+      const actionDetails = await authsignal.getAction({
+        userId: userId,
+        action: "payment_authorization",
+        idempotencyKey: idempotencyKey
+      });
+
+      console.log('\n=== ACTION DETAILS RESPONSE ===');
+      console.log('Action Details:', actionDetails);
+
+      // Get payment details from our stored map
+      const paymentDetails = pendingPayments.get(idempotencyKey);
+      
+      if (!paymentDetails) {
+        throw new Error('Payment details not found');
+      }
+
+      console.log('\n=== PAYMENT AUTHORIZATION TOKEN ===');
+      console.log('Payment Details:', paymentDetails);
+      console.log('Authorization Token:', actionDetails);
+
       res.json({
-        status: 'success',
-        message: 'Payment authorized successfully'
+        success: true,
+        verificationMethod: result.verificationMethod,
+        state: actionDetails.state,
+        paymentDetails: paymentDetails,
+        actionDetails: actionDetails
       });
     } else {
-      res.status(403).json({
+      res.json({
+        success: false,
         error: 'Challenge failed'
       });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('\n=== VALIDATION ERROR ===');
+    console.error('Error:', error);
+    res.json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
