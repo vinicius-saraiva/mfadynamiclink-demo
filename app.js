@@ -38,7 +38,7 @@ app.post('/api/payment/authorize', async (req, res) => {
     const result = await authsignal.track({
       userId: userId,
       action: "payment_authorization",
-      redirectUrl: "https://mfa-dynamic-linking-demonstration.onrender.com/payment-complete.html",
+      redirectUrl: "https://mfa-dynamic-linking-demonstration.onrender.com/payment-validation.html",
       custom: {
         amount: amount,
         currency: currency,

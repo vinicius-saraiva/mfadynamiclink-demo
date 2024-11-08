@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Token Validation</title>
+    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2 style="text-align: center;">Payment Authorization Flow</h2>
+            
+            <div style="background: var(--background); padding: 16px; border-radius: 8px; margin: 24px 0;">
+                <div class="details-grid">
+                    <span class="label">1. TOTP Validation:</span>
+                    <span class="value" style="color: var(--secondary-green);">✓ Completed</span>
+
+                    <span class="label">2. Challenge Token:</span>
+                    <span class="value" id="tokenPreview" style="font-family: monospace; word-break: break-all;"></span>
+
+                    <span class="label">3. Payment Details:</span>
+                    <span class="value" id="paymentPreview"></span>
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 214, 10, 0.1); padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+                <p style="margin: 0; color: var(--text-primary);">
+                    <span style="color: var(--accent-yellow);">ℹ️</span>
+                    The TOTP code you entered was used to validate your identity. Now, a secure challenge token will be used to authorize the payment details shown above.
+                </p>
+            </div>
+
+            <button onclick="proceedWithValidation()" class="button" style="width: 100%;">
+                Proceed with Payment Authorization
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        // Display truncated token
+        if (token) {
+            const [header, payload, signature] = token.split('.');
+            document.getElementById('tokenPreview').textContent = 
+                `${header.slice(0, 10)}...${signature.slice(-10)}`;
+        }
+
+        // Retrieve and display original payment details
+        const originalAmount = sessionStorage.getItem('originalAmount');
+        const originalCurrency = sessionStorage.getItem('originalCurrency');
+        const originalBeneficiary = sessionStorage.getItem('originalBeneficiaryName');
+
+        if (originalAmount && originalCurrency && originalBeneficiary) {
+            const formattedAmount = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: originalCurrency
+            }).format(originalAmount);
+            
+            document.getElementById('paymentPreview').textContent = 
+                `${formattedAmount} to ${originalBeneficiary}`;
+        }
+
+        function proceedWithValidation() {
+            window.location.href = `/payment-complete.html?token=${token}`;
+        }
+    </script>
+
+    <!-- Theme Switch -->
+    <div class="theme-switch" onclick="toggleTheme()" title="Toggle theme">
+        <span class="icon" id="themeIcon">☀️</span>
+    </div>
+
+    <script>
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            document.getElementById('themeIcon').textContent = theme === 'dark' ? '🌙' : '☀️';
+        }
+
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+            setTheme(theme);
+        }
+
+        initTheme();
+    </script>
+</body>
+</html> 
